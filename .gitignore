@@ -1,0 +1,19 @@
+# binaires produits par les Makefile
+*.o
+*.dSYM/
+labs/*/hello
+labs/*/registres
+labs/*/arith
+labs/*/tableaux
+labs/*/fizzbuzz
+labs/*/fonctions
+labs/*/cat
+labs/*/wc_min
+labs/*/printf
+labs/*/somme
+labs/*/casse
+labs/*/neon
+labs/*/wc_asm
+labs/*/solution/*
+!labs/*/solution/*.s
+.DS_Store
