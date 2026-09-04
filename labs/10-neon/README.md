@@ -10,7 +10,7 @@ Additionner deux tableaux de 4 entiers avec les registres vectoriels, et voir la
 2. `make run` → `11 22 33 44`.
 3. Dans lldb : `register read v0 v1 v2` après le `add` vectoriel. Lis les 4 lanes.
 4. Remplace `.4s` par `.16b` : 16 additions d'octets. Que deviennent les résultats ? Pourquoi ?
-5. `clang -O2 -S -o - -x c - <<< 'void add4(int *c, const int *a, const int *b){ for(int i=0;i<4;i++) c[i]=a[i]+b[i]; }'` : clang vectorise tout seul, retrouve les mêmes instructions.
+5. `clang -O2 -S -o - -x c - <<< 'void addn(int *restrict c, const int *restrict a, const int *restrict b, int n){ for (int i = 0; i < n; i++) c[i] = a[i] + b[i]; }'` : clang vectorise tout seul, retrouve `ldp q0, q1`, `add v0.4s` et `stp`. Puis enlève les `restrict`, ou remplace `n` par `4` : que devient le code, et pourquoi ?
 
 ## Pour aller plus loin
 Multiplie deux vecteurs de flottants (`fmul v2.4s`) et affiche-les… ce qui demande une conversion flottant → texte : c'est une bonne raison d'appeler `printf("%f")` (attention : un `double` variadique va aussi sur la pile).

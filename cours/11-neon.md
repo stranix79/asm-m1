@@ -45,12 +45,17 @@ Avec `v0.16b` à la place de `v0.4s`, les mêmes 128 bits sont vus comme 16 octe
 ## 11.3 Ce que fait clang
 
 ```bash
-clang -O2 -S -o - -x c - <<< 'void add4(int *c, const int *a, const int *b){ for (int i = 0; i < 4; i++) c[i] = a[i] + b[i]; }'
+clang -O2 -S -o - -x c - <<< 'void addn(int *restrict c, const int *restrict a, const int *restrict b, int n){ for (int i = 0; i < n; i++) c[i] = a[i] + b[i]; }'
 ```
 
-Tu retrouves `ldr q0` / `ldr q1` (charger 128 bits), `add v0.4s, v1.4s, v0.4s`, `str q0`. Le compilateur a **vectorisé** la boucle tout seul. C'est pour ça qu'une boucle simple en C est souvent plus rapide que l'assembleur qu'on écrirait à la main : clang connaît NEON mieux que nous.
+Dans la sortie, tu retrouves `ldp q0, q1, [x10, #-32]` (charger deux vecteurs de 128 bits d'un coup), des `add v0.4s, v4.4s, v0.4s`, et des `stp q0, q1`. Le compilateur a **vectorisé** la boucle tout seul, par paquets de 16 entiers par tour. Deux détails qui comptent :
 
-Aller plus loin avec NEON demande un vrai livre. L'important ici : savoir que ça existe, reconnaître `v0.4s` dans un désassemblage, et savoir que les flottants vivent dans `d0`-`d31`.
+- `restrict` dit à clang que les trois tableaux ne se recouvrent pas ; sans ça, il n'a pas le droit de supposer que `c[i]` n'écrase pas `a[i+1]`, et il vectorise moins ou pas ;
+- avec une boucle de 4 éléments fixes, clang ne vectorise pas : il **déroule** (quatre `ldr w`, quatre `add w`, quatre `str w`), c'est déjà plus rapide qu'une boucle et ça ne vaut pas un vecteur. Le SIMD paie sur des volumes.
+
+C'est pour ça qu'une boucle simple en C est souvent plus rapide que l'assembleur qu'on écrirait à la main : clang connaît NEON mieux que nous, à condition de lui donner les bonnes garanties.
+
+Aller plus loin avec NEON demande un vrai livre. L'important ici : savoir que ça existe, reconnaître `v0.4s` et `q0` dans un désassemblage, et savoir que les flottants vivent dans `d0`-`d31`.
 
 ---
 
