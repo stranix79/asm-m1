@@ -7,6 +7,8 @@ stranix · le renard qui aime savoir ce qui se passe sous le capot
 $ cat asm-m1/README.md
 ```
 
+Un cours en français, par **Gilles Fauvie** ([stranix.net](https://stranix.net)).
+
 Tu codes déjà. En C, en Python, en PHP, peu importe. Tu as peut-être croisé de l'assembleur pendant tes études, il y a longtemps, et il n'en reste qu'un vague souvenir de registres et de `mov`. Et tu as un Mac M1, M2 ou M3 sur le bureau.
 
 Ce dépôt est un cours **qui part de zéro** pour programmer en assembleur **ARM64 natif sur macOS**, avec les outils déjà installés sur ta machine : `as`, `ld`, `clang`, `lldb`. Pas de machine virtuelle, pas d'émulateur, pas de x86 d'un autre âge. Le processeur qui est dans ton Mac, et rien d'autre entre toi et lui.
@@ -60,6 +62,21 @@ make debug                      # lldb, arrêté sur la première instruction
 Parce que presque tout ce qui existe sur l'assembleur ARM64 est en anglais, vise Linux ou un Raspberry Pi, et que les quelques différences macOS (le `_` devant les symboles, `x16` pour les syscalls, `-lSystem`, les variadiques sur la pile) font perdre des heures à qui débarque. Ici, tout est écrit pour la machine que tu as devant toi.
 
 Licence MIT. Le cours est vivant : une erreur, une question, une idée de labo, ouvre une issue. On en parle aussi sur [stranix.net](https://stranix.net).
+
+## Du même auteur
+
+Les autres cours, même esprit :
+
+- [cours-python](https://github.com/stranix79/cours-python) : Python de zéro à FastAPI, même format, même public.
+- [cours-go](https://github.com/stranix79/cours-go) : Go de zéro à la prod, même format, même public.
+
+Et le reste :
+
+- [stranix.net](https://stranix.net) : le blog, où l'on parle de ce genre de choses.
+- [Deckhand](https://deckhand.show) : des présentations HTML écrites en Markdown.
+- [Chutag](https://chutag.stranix.net) : des tags QR pour retrouver ses objets perdus (bêta).
+- [apps.stranix.net](https://apps.stranix.net) : les apps macOS de Stranix.
+- [CODE79](https://code79.com) : l'atelier devops derrière tout ça.
 
 ```
 $ ls /ventures
